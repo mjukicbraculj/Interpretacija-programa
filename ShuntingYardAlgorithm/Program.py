@@ -5,3 +5,4 @@ if __name__ == '__main__':
     example2 = "a+b(c+d)"           #this example teste function token
     shuntingYard = ShuntingYard(example2)
     shuntingYard.ReadExpression()
+    print("kraj")

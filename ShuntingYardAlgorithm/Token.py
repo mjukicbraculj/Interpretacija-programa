@@ -2,8 +2,9 @@ class Token:
 
     UnaryOperatorsList = {"+", "-"}
     BinaryOperatorsList = {"+", "-", "*", "/", "^"}
-    OpenBracketsList = {"(", "[", "{"}
-    CloseBracketsList = {")", "]", "}"}
+    OpenBracketsDict = {"(": 1, "[": 2, "{": 3}
+    CloseBracketsDict = {")": 1, "]": 2, "}": 3}
+    SeparatorList = {","}
 
     def __init__(self, label, isFunction, isBinaryOperator, isUnaryOperator, isOperand):
         self.BinaryOperatorsPriorityDict = {"(": 0, ")" : 0, "+" : 1, "-" : 1, "*" : 2, "/" : 2, "^" : 3}
@@ -14,6 +15,8 @@ class Token:
         self.isOperand = isOperand
         self.priority = self.GetOperatorPriority()
 
+    def __repr__(self):
+        return self.label + " "
 
     @staticmethod
     def CheckIsBinaryOperator(label):
@@ -29,12 +32,15 @@ class Token:
 
     @staticmethod
     def CheckIsOpenBracket(label):
-        return Token.OpenBracketsList.__contains__(label)
+        return Token.OpenBracketsDict.keys().__contains__(label)
 
     @staticmethod
     def CheckIsCloseBracket(label):
-        return Token.CloseBracketsList.__contains__(label)
+        return Token.CloseBracketsDict.keys().__contains__(label)
 
+    @staticmethod
+    def CheckIsSeparator(label):
+        return Token.SeparatorList.__contains__(label)
 
 
     def GetOperatorPriority(self):
@@ -42,4 +48,19 @@ class Token:
             return self.BinaryOperatorsPriorityDict[self.label]
         else:
             return 0
+
+
+    def IsLeftAssociative(self):
+        priority = self.GetOperatorPriority()
+        if(priority > 0 and priority < 3):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def IsSameBracketType(open, close):
+        if Token.OpenBracketsDict[open] == Token.CloseBracketsDict[close]:
+            return True
+        else:
+            return False
 
