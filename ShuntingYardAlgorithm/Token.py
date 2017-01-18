@@ -7,7 +7,7 @@ class Token:
     SeparatorList = {","}
 
     def __init__(self, label, isFunction, isBinaryOperator, isUnaryOperator, isOperand):
-        self.BinaryOperatorsPriorityDict = {"(": 0, ")" : 0, "+" : 1, "-" : 1, "*" : 2, "/" : 2, "^" : 3}
+        self.BinaryOperatorsPriorityDict = {"(": 0, "[" : 0, "{" : 0, "+" : 1, "-" : 1, "*" : 2, "/" : 2, "^" : 3}
         self.label = label
         self.isFunction = isFunction
         self.isBinaryOperator = isBinaryOperator
@@ -28,7 +28,9 @@ class Token:
 
     @staticmethod
     def CheckIsOperand(label):
-        return not (Token.CheckIsUnaryOperator(label) and Token.CheckIsBinaryOperator(label))
+        return not (Token.CheckIsUnaryOperator(label) or Token.CheckIsBinaryOperator(label) or
+                    Token.CheckIsOpenBracket(label) or Token.CheckIsCloseBracket(label) or
+                    Token.CheckIsSeparator(label))
 
     @staticmethod
     def CheckIsOpenBracket(label):
@@ -63,4 +65,3 @@ class Token:
             return True
         else:
             return False
-
