@@ -10,9 +10,10 @@ if __name__ == '__main__':
     example7 = "A * B ^ C + D"      #A B C ^ * D +
     example8 = "A * (B + C * D) + E"    #A B C D * + * E +
     example9 = "a(3,,2*3)"            #Separators are not correct!
-    example11 = "a+b(a, b)))"           #Brackets are not correct!
+    example12 = "a+b(a, b)))"           #Brackets are not correct!
     example10 = "(a+b+c)^-d"
-    shuntingYard = ShuntingYard(example11)
+    example11 = "a+b"
+    shuntingYard = ShuntingYard(example5)
     shuntingYard.ReadExpression()
 
 

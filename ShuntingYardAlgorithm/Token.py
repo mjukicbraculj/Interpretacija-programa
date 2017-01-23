@@ -6,7 +6,7 @@ class Token:
     CloseBracketsDict = {")": 1, "]": 2, "}": 3}
     SeparatorList = {","}
 
-    def __init__(self, label, isFunction, isBinaryOperator, isUnaryOperator, isOperand):
+    def __init__(self, label, isFunction, isBinaryOperator, isUnaryOperator, isOperand, argsNum):
         self.BinaryOperatorsPriorityDict = {"(": 0, "[" : 0, "{" : 0, "+" : 1, "-" : 1, "*" : 2, "/" : 2, "^" : 3}
         self.label = label
         self.isFunction = isFunction
@@ -14,6 +14,7 @@ class Token:
         self.isUnaryOperator = isUnaryOperator
         self.isOperand = isOperand
         self.priority = self.GetOperatorPriority()
+        self.argsNum = argsNum;           #for remembering number of function args
 
     def __repr__(self):
         return self.label + " "
