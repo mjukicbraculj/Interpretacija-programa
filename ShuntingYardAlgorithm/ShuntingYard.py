@@ -1,5 +1,6 @@
 from Token import Token
 from AST import AST
+from collections import OrderedDict
 
 #class that implements shunting yard algorithm
 
@@ -23,10 +24,6 @@ class ShuntingYard:
                     if token.isFunction:                        #token f-ja --> dodamo ga u operatore
                         self.operators.append(token)
                     elif token.isOperand:                       #token operand --> dodamo ga u operande
-                        if (len(self.operators) > 1 and
-                                self.operators[-2].isFunction
-                                    and self.operators[-2].argsNum == 0):   #...function, (
-                            self.operators[-2].argsNum+=1
                         self.operands.append(self.MakeAST(token))
                     elif token.isBinaryOperator:                #ako je binarni micemo operatore s stoga ako imaju prioritet veci od sadasnjeg
                         while len(self.operators) > 0:
@@ -66,28 +63,23 @@ class ShuntingYard:
 
     def MakeAST(self, token):
         if token.isOperand:
-            return AST(tree='operand:'+token.label)
-        # elif token.isUnaryOperator:
-        #     if len(self.operands) > 0:
-        #         return AST(tree='unarniOperator' + token.label, rightChild=self.operands.pop())
-        #     else:
-        #         raise Exception("AST UNARY OPERATOR: There is not enough operands!")
-        # elif token.isBinaryOperator:
-        #     if len(self.operands) > 0:
-        #         return AST(tree='binaryOperator' + token.label,
-        #                    leftChild=self.operands.pop(), rightChild=self.operands.pop())
-        #     else:
-        #         raise Exception("AST BINARY OPERATOR: There is not enoguh operands!")
-        # elif token.isFunction:
-        #     if len(self.operands) > token.argsNum:
+            return AST(tree='operand', value = token.label)
         else:
-            print("STVARAM " + token.label + " " + str(token.argsNum))
+            #print("STVARAM " + token.label + " " + str(token.argsNum) + "duljina operands je " + str(len(self.operands)))
             if len(self.operands) >= token.argsNum:
-                args = {'tree':'operator'+token.label}
+                args = OrderedDict()
+                if(token.isFunction):
+                    args['tree'] = 'funkcija:'+ token.label
+                else:
+                    args['tree']='operator'+token.label
                 while token.argsNum > 0:
                     args['arg'+str(token.argsNum)]=self.operands.pop(-1)
                     token.argsNum-=1
+                args = OrderedDict(reversed(list(args.items())))
+                #print(list(args.items()))
                 return AST(**args)
+            else:
+                raise Exception("Error: number od operands is not correct!")
 
 
 
@@ -130,7 +122,14 @@ class ShuntingYard:
             tokenList.append(Token(self.expression[self.counter], False, True, False,  False, 2))
         elif (Token.CheckIsOperand(self.expression[self.counter]) and self.counter < len(self.expression)-1 and
                 Token.CheckIsOpenBracket(self.expression[self.counter+1])):
-            tokenList.append(Token(self.expression[self.counter], True, False, False, False, 0))
+            try:
+                if Token.CheckIsCloseBracket(self.expression[self.counter+2]):
+                    argNum = 0
+                else:
+                    argNum = 1
+            except:
+                raise Exception('Error: function brackets!')
+            tokenList.append(Token(self.expression[self.counter], True, False, False, False, argNum))
         else:
             tokenList.append(Token(self.expression[self.counter], False, False, False, True, 0))
             if self.counter < len(self.expression)-1 and Token.CheckIsOperand(self.expression[self.counter+1]): #kada ispustimo *
