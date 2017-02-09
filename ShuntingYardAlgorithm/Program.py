@@ -16,7 +16,7 @@ if __name__ == '__main__':
     example13 = 'a+b()'
     example14 = '2 + 3 -'
     shuntingYard = ShuntingYard(example5)
-    shuntingYard.ReadExpression()
+    print(shuntingYard.ReadExpression())
 
 
 #example5 [operator+(arg1=operand(value=3), arg2=operator/(arg1=operator*(arg1=operand(value=4), arg2=operand(value=2)), arg2=operator^(arg1=operator-(arg1=operand(value=1), arg2=operand(value=5)), arg2=operator^(arg1=operand(value=2), arg2=operand(value=3)))))]

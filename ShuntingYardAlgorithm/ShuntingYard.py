@@ -58,8 +58,9 @@ class ShuntingYard:
             else:
                 self.operands.append(self.MakeAST(lastToken))
                 self.operators.pop(-1)
-        print(self.operands)
-        print(self.operators)
+        # print(self.operands)
+        # print(self.operators)
+        return self.operands
 
     def MakeAST(self, token):
         if token.isOperand:
