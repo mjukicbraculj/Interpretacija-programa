@@ -99,7 +99,8 @@ def algorithm(expression):
                     operands.append(MakeAST(operators.pop(-1)))
         elif token.tip == Aritmetika.OTVORENA:
             operators.append(token)
-
+        else:
+            raise Exception("Greška nepoznati token:", token.sadržaj)
 
     while len(operators) > 0:
         lastToken = operators[-1]
@@ -184,6 +185,7 @@ if __name__ == '__main__':
     expression4 = '(3+4]'
     expression5 = '(3+6)]'
     example5 = "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3"
+    example6 = "a|e"
     #print(*lex(expression), sep='\n')
     print(algorithm(expression))
     print(algorithm(expression1))
